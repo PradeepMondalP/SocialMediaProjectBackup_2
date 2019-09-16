@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -83,6 +85,35 @@ public class ChatActivity extends AppCompatActivity {
 
 
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.chat_activity_menu , menu);
+        return true;
+    }
+
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId())
+//        {
+//            case R.id.id_prof_chat:
+//                Toast.makeText(this,
+//                        "profile", Toast.LENGTH_SHORT).show();
+//                break;
+//
+//            case R.id.id_clat_chat:
+//                Toast.makeText(this,
+//                        "clear chat activity", Toast.LENGTH_SHORT).show();
+//                break;
+//
+//            case R.id.id_chat_block:
+//                Toast.makeText(this,
+//                        "block", Toast.LENGTH_SHORT).show();
+//                break;
+//        }
+//        return true;
+//    }
 
     private void fetchMessages()
     {

@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.example.socialmediaproject2.latseenupdate.LastSeenUpdate;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
@@ -66,6 +67,8 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionButton fab;
 
     private Boolean likesChecker = false;
+
+    private LastSeenUpdate lastSeenUpdate;
 
 
     @Override
@@ -145,16 +148,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-      //  updateUserStatus("online");
-
-
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
         if (user == null) {
             sendUserToLoginActivity();
         } else {
             checkUserExistence();
-
         }
 
     }

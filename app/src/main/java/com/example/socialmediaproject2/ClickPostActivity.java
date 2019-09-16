@@ -48,6 +48,7 @@ public class ClickPostActivity extends AppCompatActivity {
 
         initialize_id();
 
+
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("Posting Images");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

@@ -41,7 +41,7 @@ public class FriendRequestActivity extends AppCompatActivity {
     private Toolbar mToolbar;
     private RecyclerView mRecyclerView;
     private FirebaseAuth mAuth;
-    private DatabaseReference UserRef;
+    private DatabaseReference UserRef , friendRef;
     String current_user_id ;
     private DatabaseReference rootRef , freindReqRef;
 
@@ -125,6 +125,7 @@ public class FriendRequestActivity extends AppCompatActivity {
                                     public void onClick(View v) {
 
                                         cancelRequests(current_user_id , list_user_ID);
+                                        simpleToastMessage("");
                                     }
                                 });
                             }
@@ -144,9 +145,7 @@ public class FriendRequestActivity extends AppCompatActivity {
                                     @Override
                                     public void onClick(View v) {
 
-                                        Toast.makeText(FriendRequestActivity.this,
-                                                "want to reject", Toast.LENGTH_SHORT).show();
-
+                                        simpleToastMessage("rejecting request..");
                                         cancelRequests(current_user_id , list_user_ID);
                                     }
                                 });
@@ -154,8 +153,9 @@ public class FriendRequestActivity extends AppCompatActivity {
                                 holder.acceptBtn.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                        Toast.makeText(getApplicationContext(),
-                                                "want to accept", Toast.LENGTH_SHORT).show();
+
+                                        acceptFreindRequest(current_user_id , list_user_ID);
+                                        simpleToastMessage("request accepted.");
                                     }
                                 });
                             }
@@ -175,9 +175,32 @@ public class FriendRequestActivity extends AppCompatActivity {
         obj.startListening();
     }
 
+    private void acceptFreindRequest(String current_user_id, String list_user_id) {
+
+        cancelRequests(current_user_id , list_user_id);
+
+        Calendar obj = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMMM-yyyy");
+        final String saveDate = dateFormat.format(obj.getTime());
+
+        final DatabaseReference senderRef = friendRef.child(current_user_id).child(list_user_id).child("date");
+        final DatabaseReference receiverRef = friendRef.child(list_user_id).child(current_user_id).child("date");
+
+        senderRef.setValue(saveDate).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+                if(task.isSuccessful())
+                {
+                    receiverRef.setValue(saveDate);
+                    Toast.makeText(FriendRequestActivity.this,
+                            "friend request accepted", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
     private void cancelRequests(String current_user_id, String list_user_id) {
-
-
 
         DatabaseReference senderSide = freindReqRef.child(current_user_id).child(list_user_id);
         final DatabaseReference receiverSide = freindReqRef.child(list_user_id).child(current_user_id);
@@ -189,17 +212,11 @@ public class FriendRequestActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful())
-                        {
-                            Toast.makeText(FriendRequestActivity.this,
-                                    "cancelled request successfully", Toast.LENGTH_SHORT).show();
-
+                        { // todo
                         }
                         else
                         {
-                            Toast.makeText(FriendRequestActivity.this,
-                                    "couldn't cancel request", Toast.LENGTH_SHORT).show();
-
-
+                            simpleToastMessage("couldn't cancel request");
                         }
                     }
                 });
@@ -207,6 +224,13 @@ public class FriendRequestActivity extends AppCompatActivity {
         });
 
     }
+
+    public void simpleToastMessage(String str)
+    {
+        Toast.makeText(getApplicationContext(),
+                " "+ str, Toast.LENGTH_SHORT).show();
+    }
+
 
     public static class FindFriendRequestHolder extends RecyclerView.ViewHolder
     {
@@ -259,6 +283,7 @@ public class FriendRequestActivity extends AppCompatActivity {
         UserRef = FirebaseDatabase.getInstance().getReference().child("Users");
         rootRef =FirebaseDatabase.getInstance().getReference();
         freindReqRef = rootRef.child("FriendRequests");
+        friendRef = rootRef.child("Friends");
 
         mDialog = new ProgressDialog(getApplicationContext());
 
