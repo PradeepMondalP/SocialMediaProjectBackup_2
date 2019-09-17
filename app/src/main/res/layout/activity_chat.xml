@@ -42,7 +42,7 @@
             android:layout_margin="4dp"
             android:hint="type your message"
             android:background="@drawable/input"
-            android:padding="10dp"
+            android:padding="12dp"
             android:layout_height="wrap_content" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton

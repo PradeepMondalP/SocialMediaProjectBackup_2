@@ -21,7 +21,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.socialmediaproject2.latseenupdate.LastSeenUpdate;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -61,8 +60,6 @@ public class ChatActivity extends AppCompatActivity {
     private DatabaseReference rootRef , messageRef ,userRef;
 
     private Toolbar mToolbar;
-
-    LastSeenUpdate lastSeenUpdate;
 
 
     @Override
@@ -315,31 +312,6 @@ public class ChatActivity extends AppCompatActivity {
       });
     }
 
-    protected void onStart() {
-        super.onStart();
-
-        lastSeenUpdate.update("online");
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        lastSeenUpdate.update("online");
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        lastSeenUpdate.update("offline");
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        lastSeenUpdate.update("online");
-    }
-
-
 
     private void initialize_id()
     {
@@ -383,7 +355,6 @@ public class ChatActivity extends AppCompatActivity {
         chatActivityRecyclerView.setAdapter(messageAdapter);
 
 
-        lastSeenUpdate = new LastSeenUpdate(messageSenderID);
     }
 
 
