@@ -25,7 +25,7 @@ public class LastSeenUpdate {
         rootRef = FirebaseDatabase.getInstance().getReference();
         userRef = rootRef.child("Users");
         mAuth = FirebaseAuth.getInstance();
-        userStateRef = userRef.child(currentUserId).child("userStateRef");
+        userStateRef = userRef.child(currentUserId).child("userState");
 
         SimpleDateFormat date = new SimpleDateFormat("MMM dd,yyyy");
         saveCurrentDate = date.format(Calendar.getInstance().getTime());

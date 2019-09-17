@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 //import com.example.socialmediaproject2.latseenupdate.LastSeenUpdate;
+import com.example.socialmediaproject2.latseenupdate.LastSeenUpdate;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -28,11 +29,6 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
-
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class FriendsActivity extends AppCompatActivity {
@@ -42,7 +38,8 @@ public class FriendsActivity extends AppCompatActivity {
     private String online_user_id;
     private String type;
 
-    //  private LastSeenUpdate lastSeenUpdate;
+    private LastSeenUpdate lastSeenUpdate;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -67,6 +64,30 @@ public class FriendsActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        lastSeenUpdate.update("online");
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        lastSeenUpdate.update("online");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        lastSeenUpdate.update("offline");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        lastSeenUpdate.update("online");
+    }
 
     private void initilize() {
 
@@ -75,6 +96,8 @@ public class FriendsActivity extends AppCompatActivity {
         friendsRef =FirebaseDatabase.getInstance().getReference().child("Friends").child(online_user_id);
 
         userRef = FirebaseDatabase.getInstance().getReference().child("Users");
+
+        lastSeenUpdate = new LastSeenUpdate(online_user_id);
     }
 
     private void displayAllFriends() {

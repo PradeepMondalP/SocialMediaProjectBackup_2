@@ -68,9 +68,6 @@ public class MainActivity extends AppCompatActivity {
 
     private Boolean likesChecker = false;
 
-    private LastSeenUpdate lastSeenUpdate;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -352,9 +349,6 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("userImage",tempImage);
         startActivity(intent);
     }
-
-
-
 
 
     public static class PostsViewHolder extends RecyclerView.ViewHolder

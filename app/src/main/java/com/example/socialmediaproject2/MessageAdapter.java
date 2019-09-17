@@ -67,7 +67,7 @@ public class MessageAdapter extends RecyclerView.Adapter <MessageAdapter.Message
                     String image = dataSnapshot.child("profileImage")
                             .getValue().toString();
 
-                    Picasso.with(holder.receiverProfileImage.getContext()).load(image)
+                    Picasso.with(holder.receiverProfileImage.getContext()).load(image).placeholder(R.drawable.profile)
                             .into(holder.receiverProfileImage);
                 }
             }
@@ -79,28 +79,34 @@ public class MessageAdapter extends RecyclerView.Adapter <MessageAdapter.Message
         });
 
         if(fromMessageType.equals("text")){
-            holder.receiverMessageText.setVisibility(View.INVISIBLE);
-            holder.receiverProfileImage.setVisibility(View.INVISIBLE);
+            holder.receiverMessageText.setVisibility(View.GONE);
+            holder.receiverProfileImage.setVisibility(View.GONE);
+            holder.receiverTime.setVisibility(View.GONE);
 
 
             if(fromUserId.equals(messageSenderId))
             {
-
                 holder.senderMessageText.setBackgroundResource(R.drawable.sender_message_text_background);
                 holder.senderMessageText.setTextColor(Color.WHITE);
                 holder.senderMessageText.setGravity(Gravity.LEFT);
                 holder.senderMessageText.setText(messages.getMessage());
+                holder.senderTime.setText(messages.getTime());
+
 
             }else
             {
-                holder.senderMessageText.setVisibility(View.INVISIBLE);
+                holder.senderMessageText.setVisibility(View.GONE);
+                holder.senderTime.setVisibility(View.GONE);
 
                 holder.receiverMessageText.setVisibility(View.VISIBLE);
                 holder.receiverProfileImage.setVisibility(View.VISIBLE);
+                holder.receiverTime.setVisibility(View.VISIBLE);
 
                 holder.receiverMessageText.setBackgroundResource(R.drawable.receiver_message_text_background);
                 holder.receiverMessageText.setTextColor(Color.BLACK);
                 holder.receiverMessageText.setGravity(Gravity.LEFT);
+
+                holder.receiverTime.setText(messages.getTime());
                 holder.receiverMessageText.setText(messages.getMessage());
 
             }
@@ -120,6 +126,7 @@ public class MessageAdapter extends RecyclerView.Adapter <MessageAdapter.Message
         View mView;
         TextView senderMessageText , receiverMessageText;
         CircleImageView receiverProfileImage;
+        private TextView senderTime , receiverTime;
 
         public MessageViewHolder(@NonNull View itemView)
         {
@@ -129,6 +136,8 @@ public class MessageAdapter extends RecyclerView.Adapter <MessageAdapter.Message
             receiverMessageText = (TextView)mView.findViewById(R.id.receiver_message_text);
             receiverProfileImage = (CircleImageView)mView.findViewById(R.id.message_profile_image);
 
+            senderTime = (TextView)mView.findViewById(R.id.id_sender_time);
+            receiverTime = (TextView)mView.findViewById(R.id.id_receiver_time);
             senderMessageText.setOnCreateContextMenuListener(this);
         }
 
@@ -137,8 +146,8 @@ public class MessageAdapter extends RecyclerView.Adapter <MessageAdapter.Message
         public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
 
             menu.setHeaderTitle("Options");
-            MenuItem item1 = menu.add(Menu.NONE , 0 , 1 , "details");
-            MenuItem item2 = menu.add(Menu.NONE , 1 , 2 ,"anything");
+            MenuItem item1 = menu.add(Menu.NONE , 0 , 1 , "delete for me");
+            MenuItem item2 = menu.add(Menu.NONE , 1 , 2 ,"delete for everyone");
 
             item1.setOnMenuItemClickListener(this);
             item2.setOnMenuItemClickListener(this);

@@ -95,8 +95,6 @@ public class RegisterActivity extends AppCompatActivity {
 
                                         startActivity(new Intent(getApplicationContext() ,
                                                 SetupActivity.class));
-
-                                        updateUserStatus("online");
                                         finish();
                                     }
                                     else
@@ -149,40 +147,5 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
 
-    public void updateUserStatus(String state)
-    {
-      String  UserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-     DatabaseReference   userRef = FirebaseDatabase.getInstance().getReference().child("Users");
-        try
-        {
-            String saveCurrentDate , saveCurrentTime;
-
-            Calendar callForDate = Calendar.getInstance();
-            SimpleDateFormat currentDate = new SimpleDateFormat("MMM dd, YYYY");
-            saveCurrentDate = currentDate.format(callForDate.getTime());
-
-            Calendar callForTime = Calendar.getInstance();
-            SimpleDateFormat currentTime = new SimpleDateFormat("hh:mm a");
-            saveCurrentTime = currentTime.format(callForTime.getTime());
-
-
-            Map currentStateMap = new HashMap();
-
-            currentStateMap.put("time" ,saveCurrentDate);
-            currentStateMap.put("date" ,saveCurrentTime);
-            currentStateMap.put("type" ,state);
-
-            DatabaseReference userRef2 = userRef.child(UserID).child("userState");
-            userRef2.updateChildren(currentStateMap);
-
-        }
-        catch(Exception e){
-            Toast.makeText(this,
-                    "error in updateStatus of MainActivity",
-                    Toast.LENGTH_SHORT).show();
-
-        }
-
-    }
 
 }
